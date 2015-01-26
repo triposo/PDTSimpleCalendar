@@ -63,6 +63,7 @@ const CGFloat PDTSimpleCalendarHeaderTextSize = 12.0f;
             [label sizeToFit];
 
             [labels addObject:label];
+            [self addSubview:label];
         }
 
         self.weekdayLabels = labels;
