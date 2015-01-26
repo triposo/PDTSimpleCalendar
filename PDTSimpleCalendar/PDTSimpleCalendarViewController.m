@@ -388,7 +388,7 @@ static NSString *PDTSimpleCalendarViewHeaderIdentifier = @"com.producteev.collec
     if (kind == UICollectionElementKindSectionHeader) {
         PDTSimpleCalendarViewHeader *headerView = [self.collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:PDTSimpleCalendarViewHeaderIdentifier forIndexPath:indexPath];
 
-        [headerView bindWeekdaySymbols:self.headerDateFormatter.shortStandaloneWeekdaySymbols
+        [headerView bindWeekdaySymbols:self.headerDateFormatter.veryShortStandaloneWeekdaySymbols
                           firstWeekday:self.calendar.firstWeekday];
 
         headerView.titleLabel.text = [self.headerDateFormatter stringFromDate:[self firstOfMonthForSection:indexPath.section]].uppercaseString;
