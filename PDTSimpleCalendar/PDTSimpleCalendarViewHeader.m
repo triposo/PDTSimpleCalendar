@@ -79,7 +79,7 @@ const CGFloat PDTSimpleCalendarHeaderTextSize = 12.0f;
     [CATransaction setDisableActions:TRUE];
 
     const UIEdgeInsets contentInset = UIEdgeInsetsMake(0, 10, 0, 10);
-    const CGFloat weekdayLabelsTopMargin = 4;
+    const CGFloat weekdayLabelsTopMargin = 5;
 
     CGFloat contentHeight = 0;
     contentHeight += CGRectGetHeight(self.titleLabel.bounds);
@@ -100,14 +100,13 @@ const CGFloat PDTSimpleCalendarHeaderTextSize = 12.0f;
     if ([self.weekdayLabels count]) {
         offsetY = ceilf(CGRectGetMaxY(self.titleLabel.frame) + weekdayLabelsTopMargin);
         CGFloat blockWidth = CGRectGetWidth(self.bounds) / [self.weekdayLabels count];
-
-        CGFloat offsetX = contentInset.left;
+        CGFloat offsetX = 0;
 
         for (UIView *label in self.weekdayLabels) {
             size = label.bounds.size;
 
             label.center = (CGPoint) {
-                .x = offsetX + 0.5 * roundf(blockWidth),
+                .x = roundf(offsetX + 0.5 * (blockWidth - size.width)) + 0.5 * size.width,
                 .y = offsetY + 0.5 * size.height
             };
 
