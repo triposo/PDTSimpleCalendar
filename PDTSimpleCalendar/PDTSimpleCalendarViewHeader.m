@@ -110,7 +110,7 @@ const CGFloat PDTSimpleCalendarHeaderTextSize = 12.0f;
                 .y = offsetY + 0.5 * size.height
             };
 
-            offsetX = roundf(offsetX + blockWidth);
+            offsetX = offsetX + blockWidth;
         }
     }
 
