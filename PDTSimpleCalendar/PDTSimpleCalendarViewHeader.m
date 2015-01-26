@@ -79,7 +79,7 @@ const CGFloat PDTSimpleCalendarHeaderTextSize = 12.0f;
     [CATransaction setDisableActions:TRUE];
 
     const UIEdgeInsets contentInset = UIEdgeInsetsMake(0, 10, 0, 10);
-    const CGFloat weekdayLabelsTopMargin = 5;
+    const CGFloat weekdayLabelsTopMargin = 8;
 
     CGFloat contentHeight = 0;
     contentHeight += CGRectGetHeight(self.titleLabel.bounds);
