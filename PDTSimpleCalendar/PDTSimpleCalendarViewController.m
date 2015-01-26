@@ -388,10 +388,13 @@ static NSString *PDTSimpleCalendarViewHeaderIdentifier = @"com.producteev.collec
     if (kind == UICollectionElementKindSectionHeader) {
         PDTSimpleCalendarViewHeader *headerView = [self.collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:PDTSimpleCalendarViewHeaderIdentifier forIndexPath:indexPath];
 
-        headerView.titleLabel.text = [self.headerDateFormatter stringFromDate:[self firstOfMonthForSection:indexPath.section]].uppercaseString;
+        [headerView bindWeekdaySymbols:self.headerDateFormatter.veryShortWeekdaySymbols
+                          firstWeekday:self.calendar.firstWeekday];
 
-        headerView.layer.shouldRasterize = YES;
-        headerView.layer.rasterizationScale = [UIScreen mainScreen].scale;
+        headerView.titleLabel.text = [self.headerDateFormatter stringFromDate:[self firstOfMonthForSection:indexPath.section]].uppercaseString;
+        [headerView.titleLabel sizeToFit];
+
+        [headerView setNeedsLayout];
 
         return headerView;
     }

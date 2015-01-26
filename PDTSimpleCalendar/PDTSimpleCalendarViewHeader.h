@@ -35,4 +35,6 @@
  */
 @property (nonatomic, strong) UIColor *separatorColor UI_APPEARANCE_SELECTOR;
 
+- (void)bindWeekdaySymbols:(NSArray *)weekdaySymbols firstWeekday:(NSUInteger)firstWeekday;
+
 @end

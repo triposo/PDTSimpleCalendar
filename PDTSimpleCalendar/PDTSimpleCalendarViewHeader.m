@@ -10,10 +10,15 @@
 
 const CGFloat PDTSimpleCalendarHeaderTextSize = 12.0f;
 
+@interface PDTSimpleCalendarViewHeader ()
+
+@property (nonatomic) NSArray *weekdayLabels;
+
+@end
+
 @implementation PDTSimpleCalendarViewHeader
 
-- (id)initWithFrame:(CGRect)frame
-{
+- (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
@@ -32,10 +37,7 @@ const CGFloat PDTSimpleCalendarHeaderTextSize = 12.0f;
 
         CGFloat onePixel = 1.0f / [UIScreen mainScreen].scale;
         NSDictionary *metricsDictionary = @{@"onePixel" : [NSNumber numberWithFloat:onePixel]};
-        NSDictionary *viewsDictionary = @{@"titleLabel" : self.titleLabel, @"separatorView" : separatorView};
-
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(==10)-[titleLabel]-(==10)-|" options:0 metrics:nil views:viewsDictionary]];
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[titleLabel]|" options:0 metrics:nil views:viewsDictionary]];
+        NSDictionary *viewsDictionary = NSDictionaryOfVariableBindings(separatorView);
 
         [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[separatorView]|" options:0 metrics:nil views:viewsDictionary]];
         [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[separatorView(==onePixel)]|" options:0 metrics:metricsDictionary views:viewsDictionary]];
@@ -44,6 +46,75 @@ const CGFloat PDTSimpleCalendarHeaderTextSize = 12.0f;
     return self;
 }
 
+- (void)bindWeekdaySymbols:(NSArray *)weekdaySymbols firstWeekday:(NSUInteger)firstWeekday {
+    if (![self.weekdayLabels count]) {
+        NSMutableArray *labels = [NSMutableArray array];
+        NSUInteger daysPerWeek = [weekdaySymbols count];
+
+        for (NSUInteger i = 0; i < daysPerWeek; i++) {
+            NSUInteger idx = (i + firstWeekday) % daysPerWeek;
+
+            UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
+            label.font = self.textFont;
+            label.textColor = self.textColor;
+            label.backgroundColor = [UIColor clearColor];
+            label.text = weekdaySymbols[idx];
+            label.numberOfLines = 1;
+            [label sizeToFit];
+
+            [labels addObject:label];
+        }
+
+        self.weekdayLabels = labels;
+    }
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+
+    [CATransaction begin];
+    [CATransaction setDisableActions:TRUE];
+
+    const UIEdgeInsets contentInset = UIEdgeInsetsMake(0, 10, 0, 10);
+    const CGFloat weekdayLabelsTopMargin = 4;
+
+    CGFloat contentHeight = 0;
+    contentHeight += CGRectGetHeight(self.titleLabel.bounds);
+
+    if ([self.weekdayLabels count]) {
+        contentHeight += weekdayLabelsTopMargin;
+        contentHeight += CGRectGetHeight([[self.weekdayLabels firstObject] bounds]);
+    }
+
+    CGFloat offsetY = roundf(CGRectGetMidY(self.bounds) - 0.5 * contentHeight);
+    CGSize size = self.titleLabel.bounds.size;
+
+    self.titleLabel.center = (CGPoint) {
+        .x = contentInset.left + 0.5 * size.width,
+        .y = offsetY + 0.5 * size.height
+    };
+
+    if ([self.weekdayLabels count]) {
+        offsetY = ceilf(CGRectGetMaxY(self.titleLabel.bounds) + weekdayLabelsTopMargin);
+        CGFloat contentWidth = CGRectGetWidth(UIEdgeInsetsInsetRect(self.bounds, contentInset));
+        CGFloat blockWidth = contentWidth / [self.weekdayLabels count];
+
+        CGFloat offsetX = contentInset.left;
+
+        for (UIView *label in self.weekdayLabels) {
+            size = label.bounds.size;
+
+            label.center = (CGPoint) {
+                .x = offsetX + 0.5 * roundf(blockWidth),
+                .y = offsetY + 0.5 * size.height
+            };
+
+            offsetX = roundf(offsetX + blockWidth);
+        }
+    }
+
+    [CATransaction commit];
+}
 
 #pragma mark - Colors
 
