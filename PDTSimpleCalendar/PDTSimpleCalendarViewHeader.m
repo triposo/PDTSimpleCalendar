@@ -52,7 +52,9 @@ const CGFloat PDTSimpleCalendarHeaderTextSize = 12.0f;
         NSUInteger daysPerWeek = [weekdaySymbols count];
 
         for (NSUInteger i = 0; i < daysPerWeek; i++) {
-            NSUInteger idx = (i + firstWeekday) % daysPerWeek;
+            // As documented in NSDateComponents are numbers 1 through n, e.g.
+            // Sunday is represented by 1 in Gregorian calendar.
+            NSUInteger idx = (i + firstWeekday - 1) % daysPerWeek;
 
             UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
             label.font = self.textFont;
@@ -96,9 +98,8 @@ const CGFloat PDTSimpleCalendarHeaderTextSize = 12.0f;
     };
 
     if ([self.weekdayLabels count]) {
-        offsetY = ceilf(CGRectGetMaxY(self.titleLabel.bounds) + weekdayLabelsTopMargin);
-        CGFloat contentWidth = CGRectGetWidth(UIEdgeInsetsInsetRect(self.bounds, contentInset));
-        CGFloat blockWidth = contentWidth / [self.weekdayLabels count];
+        offsetY = ceilf(CGRectGetMaxY(self.titleLabel.frame) + weekdayLabelsTopMargin);
+        CGFloat blockWidth = CGRectGetWidth(self.bounds) / [self.weekdayLabels count];
 
         CGFloat offsetX = contentInset.left;
 
