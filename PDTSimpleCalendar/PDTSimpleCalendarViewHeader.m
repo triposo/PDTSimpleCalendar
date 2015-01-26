@@ -113,9 +113,8 @@ const CGFloat PDTSimpleCalendarHeaderTextSize = 12.0f;
             offsetX = offsetX + blockWidth;
         }
 
-        // Reposition title label to make it align with the first weekday label
         size = self.titleLabel.bounds.size;
-        offsetX = roundf(CGRectGetMinX([[self.weekdayLabels firstObject] frame]));
+        offsetX = roundf(CGRectGetMidX(self.bounds) - 0.5 * size.width);
         CGPoint center = self.titleLabel.center;
         center.x = offsetX + 0.5 * size.width;
         self.titleLabel.center = center;
