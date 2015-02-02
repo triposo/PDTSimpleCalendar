@@ -130,8 +130,9 @@ const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
         [self setNeedsLayout];
     }
 
+    self.markerLabel.text = text;
+
     if ([text length]) {
-        self.markerLabel.text = text;
         self.markerLabel.hidden = FALSE;
     } else {
         self.markerLabel.hidden = TRUE;
