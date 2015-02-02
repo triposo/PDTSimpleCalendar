@@ -14,6 +14,7 @@ const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
 
 @property (nonatomic) CAShapeLayer *circleLayer;
 @property (nonatomic) UILabel *dayLabel;
+@property (nonatomic) UILabel *markerLabel;
 @property (nonatomic) NSDate *date;
 
 @end
@@ -116,6 +117,26 @@ const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
     [self setCircleColor:self.isToday selected:selected];
 }
 
+- (void)setMarker:(NSString *)text {
+    if (!self.markerLabel.superview) {
+        self.markerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 32.0f, 8.0f)];
+        self.markerLabel.font = [UIFont systemFontOfSize:8];
+        self.markerLabel.adjustsFontSizeToFitWidth = TRUE;
+        self.markerLabel.backgroundColor = [UIColor clearColor];
+        self.markerLabel.numberOfLines = 1;
+        self.markerLabel.textAlignment = NSTextAlignmentCenter;
+
+        [self.contentView addSubview:self.markerLabel];
+        [self setNeedsLayout];
+    }
+
+    if ([text length]) {
+        self.markerLabel.text = text;
+        self.markerLabel.hidden = FALSE;
+    } else {
+        self.markerLabel.hidden = TRUE;
+    }
+}
 
 - (void)setCircleColor:(BOOL)today selected:(BOOL)selected
 {
@@ -151,6 +172,7 @@ const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
     }
 
     self.dayLabel.textColor = labelColor;
+    self.markerLabel.textColor = labelColor;
 
     [CATransaction commit];
 }
@@ -181,6 +203,15 @@ const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
 
     self.circleLayer.position = self.dayLabel.center;
 
+    if (self.markerLabel) {
+        size = self.markerLabel.bounds.size;
+
+        self.markerLabel.center = (CGPoint) {
+            .x = roundf(CGRectGetMidX(self.circleLayer.frame) - 0.5f * size.width) + 0.5f * size.width,
+            .y = roundf(CGRectGetMaxY(self.circleLayer.frame) - 0.5f * size.height) + 0.5f * size.height
+        };
+    }
+
     [CATransaction commit];
 }
 
@@ -197,6 +228,8 @@ const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
 
     self.dayLabel.text = @"";
     self.dayLabel.textColor = [self textDefaultColor];
+    self.markerLabel.text = nil;
+    self.markerLabel.textColor = [self textDefaultColor];
     self.circleLayer.hidden = TRUE;
 
     [CATransaction commit];

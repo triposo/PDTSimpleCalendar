@@ -31,6 +31,9 @@ static NSString *PDTSimpleCalendarViewHeaderIdentifier = @"com.producteev.collec
 //Number of days per week
 @property (nonatomic, assign) NSUInteger daysPerWeek;
 
+@property (nonatomic, copy) NSString *markerText;
+@property (nonatomic) NSDate *markerDate;
+
 @end
 
 
@@ -165,6 +168,24 @@ static NSString *PDTSimpleCalendarViewHeaderIdentifier = @"com.producteev.collec
     components.day = 0;
 
     return [self.calendar dateFromComponents:components];
+}
+
+- (void)setMarker:(NSString *)text date:(NSDate *)date {
+    if (self.markerDate) {
+        PDTSimpleCalendarViewCell *cell = [self cellForItemAtDate:self.markerDate];
+        [cell setMarker:nil];
+    }
+
+    self.markerText = text;
+    self.markerDate = date;
+
+    if (self.markerDate) {
+        PDTSimpleCalendarViewCell *cell = [self cellForItemAtDate:self.markerDate];
+        [cell setMarker:text];
+
+        NSIndexPath *indexPath = [self indexPathForCellAtDate:self.markerDate];
+        [self.collectionView reloadItemsAtIndexPaths:@[indexPath]];
+    }
 }
 
 - (void)setSelectedDate:(NSDate *)newSelectedDate
@@ -322,6 +343,7 @@ static NSString *PDTSimpleCalendarViewHeaderIdentifier = @"com.producteev.collec
     BOOL isToday = NO;
     BOOL isSelected = NO;
     BOOL isCustomDate = NO;
+    BOOL isMarkerDate = FALSE;
 
     if (cellDateComponents.month == firstOfMonthsComponents.month) {
         isSelected = ([self isSelectedDate:cellDate] && (indexPath.section == [self sectionForDate:cellDate]));
@@ -333,9 +355,17 @@ static NSString *PDTSimpleCalendarViewHeaderIdentifier = @"com.producteev.collec
             isCustomDate = [self.delegate simpleCalendarViewController:self shouldUseCustomColorsForDate:cellDate];
         }
 
-
+        if (self.markerDate) {
+            isMarkerDate = [self clampAndCompareDate:cellDate withReferenceDate:self.markerDate];
+        }
     } else {
         [cell setDate:nil calendar:nil];
+    }
+
+    if (isMarkerDate) {
+        [cell setMarker:self.markerText];
+    } else {
+        [cell setMarker:nil];
     }
 
     if (isToday) {

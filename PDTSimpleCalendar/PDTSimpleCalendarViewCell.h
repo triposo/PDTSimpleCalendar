@@ -116,7 +116,9 @@
  *
  * @param calendar the calendar.
  */
-- (void) setDate:(NSDate*)date calendar:(NSCalendar*)calendar;
+- (void)setDate:(NSDate *)date calendar:(NSCalendar*)calendar;
+
+- (void)setMarker:(NSString *)text;
 
 /**
  *  Force the refresh of the colors for the circle and the text

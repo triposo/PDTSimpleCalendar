@@ -66,6 +66,14 @@
  */
 @property (nonatomic, weak) id<PDTSimpleCalendarViewDelegate> delegate;
 
+/**
+ * Place a marker label with the specified text in the cell corresponding to the
+ * specified date
+ *
+ * @param text the text to show
+ * @param date the date where the corresponding cell will render the marker
+ */
+- (void)setMarker:(NSString *)text date:(NSDate *)date;
 
 /**
  *  Change the selected date of the calendar, and scroll to it
