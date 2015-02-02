@@ -172,7 +172,13 @@ const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
     }
 
     self.dayLabel.textColor = labelColor;
-    self.markerLabel.textColor = labelColor;
+
+    if (selected) {
+        self.markerLabel.hidden = TRUE;
+    } else {
+        self.markerLabel.textColor = labelColor;
+        self.markerLabel.hidden = FALSE;
+    }
 
     [CATransaction commit];
 }
