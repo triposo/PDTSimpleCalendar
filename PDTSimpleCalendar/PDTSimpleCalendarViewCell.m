@@ -235,11 +235,12 @@ const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
 
     self.dayLabel.text = @"";
     self.dayLabel.textColor = [self textDefaultColor];
-    self.markerLabel.text = nil;
-    self.markerLabel.textColor = [self textDefaultColor];
     self.circleLayer.hidden = TRUE;
 
     [CATransaction commit];
+
+    [self.markerLabel removeFromSuperview];
+    self.markerLabel = nil;
 }
 
 #pragma mark - Circle Color Customization Methods
