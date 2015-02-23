@@ -31,8 +31,6 @@
     PDTSimpleCalendarViewController *calendarViewController = [[PDTSimpleCalendarViewController alloc] init];
     //This is the default behavior, will display a full year starting the first of the current month
     [calendarViewController setDelegate:self];
-    [calendarViewController setMarker:@"check out"
-                                 date:[NSDate dateWithTimeIntervalSinceNow:604800]];
 
     PDTSimpleCalendarViewController *hebrewCalendarViewController = [[PDTSimpleCalendarViewController alloc] init];
     //Example of how you can change the default calendar
