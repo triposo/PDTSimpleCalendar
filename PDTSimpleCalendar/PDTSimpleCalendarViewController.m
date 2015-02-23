@@ -187,11 +187,6 @@ static NSString *PDTSimpleCalendarViewHeaderIdentifier = @"com.producteev.collec
 
     _selectedDate = startOfDay;
 
-    //Notify the delegate
-    if ([self.delegate respondsToSelector:@selector(simpleCalendarViewController:didSelectDate:)]) {
-        [self.delegate simpleCalendarViewController:self didSelectDate:self.selectedDate];
-    }
-
     NSIndexPath *indexPath = [self indexPathForCellAtDate:_selectedDate];
     [self.collectionView reloadItemsAtIndexPaths:@[ indexPath ]];
 }
@@ -285,7 +280,6 @@ static NSString *PDTSimpleCalendarViewHeaderIdentifier = @"com.producteev.collec
     NSDateComponents *cellDateComponents = [self.calendar components:NSDayCalendarUnit|NSMonthCalendarUnit fromDate:cellDate];
     NSDateComponents *firstOfMonthsComponents = [self.calendar components:NSMonthCalendarUnit fromDate:firstOfMonth];
 
-    BOOL isToday = NO;
     BOOL isSelected = NO;
     BOOL isCustomDate = NO;
 
@@ -334,10 +328,13 @@ static NSString *PDTSimpleCalendarViewHeaderIdentifier = @"com.producteev.collec
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     self.selectedDate = [self dateForCellAtIndexPath:indexPath];
 
+    if ([self.delegate respondsToSelector:@selector(simpleCalendarViewController:didSelectDate:)]) {
+        [self.delegate simpleCalendarViewController:self didSelectDate:self.selectedDate];
+    }
+
     NSArray *visibleCellIndexPaths = [collectionView indexPathsForVisibleItems];
     [collectionView reloadItemsAtIndexPaths:visibleCellIndexPaths];
 }
-
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
 {
