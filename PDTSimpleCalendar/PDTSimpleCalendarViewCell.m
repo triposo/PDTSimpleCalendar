@@ -144,19 +144,6 @@ const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
     UIColor *circleColor;
     UIColor *labelColor = [self textDefaultColor];
 
-    if (self.date && self.delegate) {
-        if ([self.delegate respondsToSelector:@selector(simpleCalendarViewCell:shouldUseCustomColorsForDate:)] && [self.delegate simpleCalendarViewCell:self shouldUseCustomColorsForDate:self.date]) {
-
-            if ([self.delegate respondsToSelector:@selector(simpleCalendarViewCell:textColorForDate:)] && [self.delegate simpleCalendarViewCell:self textColorForDate:self.date]) {
-                labelColor = [self.delegate simpleCalendarViewCell:self textColorForDate:self.date];
-            }
-
-            if ([self.delegate respondsToSelector:@selector(simpleCalendarViewCell:circleColorForDate:)] && [self.delegate simpleCalendarViewCell:self circleColorForDate:self.date]) {
-                circleColor = [self.delegate simpleCalendarViewCell:self circleColorForDate:self.date];
-            }
-        }
-    }
-
     if (self.dateRangeStatus == DateRangeStatusStart || self.dateRangeStatus == DateRangeStatusEnd) {
         circleColor = self.circleRangeEndColor;
         labelColor = self.textSelectedColor;
