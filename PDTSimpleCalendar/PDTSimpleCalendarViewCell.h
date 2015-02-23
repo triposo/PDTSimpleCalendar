@@ -70,35 +70,39 @@ typedef NS_ENUM(NSInteger, DateRangeStatus) {
  */
 @property (nonatomic, weak) id<PDTSimpleCalendarViewCellDelegate> delegate;
 
+@property (nonatomic) UIColor *cellRangeColor UI_APPEARANCE_SELECTOR;
+
 /**
  *  Customize the circle behind the day's number color using UIAppearance.
  */
-@property (nonatomic, strong) UIColor *circleDefaultColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic) UIColor *circleDefaultColor UI_APPEARANCE_SELECTOR;
 
 /**
  *  Customize the color of the circle when cell is selected using UIAppearance.
  */
-@property (nonatomic, strong) UIColor *circleSelectedColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic) UIColor *circleSelectedColor UI_APPEARANCE_SELECTOR;
+
+@property (nonatomic) UIColor *circleRangeEndColor UI_APPEARANCE_SELECTOR;
 
 /**
  *  Customize the day's number using UIAppearance.
  */
-@property (nonatomic, strong) UIColor *textDefaultColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic) UIColor *textDefaultColor UI_APPEARANCE_SELECTOR;
 
 /**
  *  Customize the day's number color when cell is selected using UIAppearance.
  */
-@property (nonatomic, strong) UIColor *textSelectedColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic) UIColor *textSelectedColor UI_APPEARANCE_SELECTOR;
 
 /**
  *  Customize the day's number color when cell is disabled using UIAppearance.
  */
-@property (nonatomic, strong) UIColor *textDisabledColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic) UIColor *textDisabledColor UI_APPEARANCE_SELECTOR;
 
 /**
  *  Customize the day's number font using UIAppearance.
  */
-@property (nonatomic, strong) UIFont *textDefaultFont UI_APPEARANCE_SELECTOR;
+@property (nonatomic) UIFont *textDefaultFont UI_APPEARANCE_SELECTOR;
 
 /**
  * Set the date for this cell

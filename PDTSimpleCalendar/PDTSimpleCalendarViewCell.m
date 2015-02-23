@@ -12,9 +12,11 @@ const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
 
 @interface PDTSimpleCalendarViewCell ()
 
-@property (nonatomic) CALayer *circleLayer;
+@property (nonatomic) CALayer *stripe;
+@property (nonatomic) CALayer *circle;
 @property (nonatomic) UILabel *dayLabel;
 @property (nonatomic) NSDate *date;
+@property (nonatomic) DateRangeStatus dateRangeStatus;
 
 @end
 
@@ -71,12 +73,12 @@ const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
     self = [super initWithFrame:frame];
     if (self) {
         CGFloat length = PDTSimpleCalendarCircleSize;
-        self.circleLayer = [CALayer layer];
-        self.circleLayer.contentsScale = [UIScreen mainScreen].scale;
-        self.circleLayer.frame = CGRectMake(0, 0, length, length);
-        self.circleLayer.masksToBounds = TRUE;
-        self.circleLayer.cornerRadius = 0.5f * length;
-        [self.contentView.layer addSublayer:self.circleLayer];
+        self.circle = [CALayer layer];
+        self.circle.contentsScale = [UIScreen mainScreen].scale;
+        self.circle.frame = CGRectMake(0, 0, length, length);
+        self.circle.masksToBounds = TRUE;
+        self.circle.cornerRadius = 0.5f * length;
+        [self.contentView.layer addSublayer:self.circle];
 
         _date = nil;
 
@@ -127,6 +129,8 @@ const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
                 circleColor = [self.delegate simpleCalendarViewCell:self circleColorForDate:self.date];
             }
         }
+
+
     }
 
     if (selected) {
@@ -138,10 +142,10 @@ const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
     [CATransaction setDisableActions:TRUE];
 
     if (circleColor) {
-        self.circleLayer.backgroundColor = circleColor.CGColor;
-        self.circleLayer.hidden = FALSE;
+        self.circle.backgroundColor = circleColor.CGColor;
+        self.circle.hidden = FALSE;
     } else {
-        self.circleLayer.hidden = TRUE;
+        self.circle.hidden = TRUE;
     }
 
     self.dayLabel.textColor = labelColor;
@@ -171,24 +175,25 @@ const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
         .y = roundf(center.y - 0.5f * size.height) + 0.5f * size.height
     };
 
-    self.circleLayer.position = self.dayLabel.center;
+    self.circle.position = self.dayLabel.center;
 
     [CATransaction commit];
 }
 
 #pragma mark - Prepare for Reuse
 
-- (void)prepareForReuse
-{
+- (void)prepareForReuse {
     [super prepareForReuse];
-    _date = nil;
+
+    self.date = nil;
+    self.dateRangeStatus = DateRangeStatusNone;
 
     [CATransaction begin];
     [CATransaction setDisableActions:TRUE];
 
     self.dayLabel.text = @"";
     self.dayLabel.textColor = [self textDefaultColor];
-    self.circleLayer.hidden = TRUE;
+    self.circle.hidden = TRUE;
 
     [CATransaction commit];
 }
