@@ -13,15 +13,15 @@ const CGFloat PDTSimpleCalendarHeaderTextSize = 12.0f;
 @interface PDTSimpleCalendarViewHeader ()
 
 @property (nonatomic) NSArray *weekdayLabels;
+@property (nonatomic, weak) CALayer *bottomBorder;
 
 @end
 
 @implementation PDTSimpleCalendarViewHeader
 
-- (id)initWithFrame:(CGRect)frame {
+- (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code
         _titleLabel = [[UILabel alloc] init];
         [_titleLabel setFont:self.textFont];
         [_titleLabel setTextColor:self.textColor];
@@ -30,19 +30,12 @@ const CGFloat PDTSimpleCalendarHeaderTextSize = 12.0f;
         [self addSubview:_titleLabel];
         [_titleLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
 
-        UIView *separatorView = [[UIView alloc] init];
-        [separatorView setBackgroundColor:self.separatorColor];
-        [self addSubview:separatorView];
-        [separatorView setTranslatesAutoresizingMaskIntoConstraints:NO];
-
-        CGFloat onePixel = 1.0f / [UIScreen mainScreen].scale;
-        NSDictionary *metricsDictionary = @{@"onePixel" : [NSNumber numberWithFloat:onePixel]};
-        NSDictionary *viewsDictionary = NSDictionaryOfVariableBindings(separatorView);
-
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[separatorView]|" options:0 metrics:nil views:viewsDictionary]];
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[separatorView(==onePixel)]|" options:0 metrics:metricsDictionary views:viewsDictionary]];
+        CALayer *border = [CALayer layer];
+        border.contentsScale = [UIScreen mainScreen].scale;
+        border.backgroundColor = self.separatorColor.CGColor;
+        [self.layer addSublayer:border];
+        self.bottomBorder = border;
     }
-
     return self;
 }
 
@@ -120,6 +113,13 @@ const CGFloat PDTSimpleCalendarHeaderTextSize = 12.0f;
         self.titleLabel.center = center;
     }
 
+    if (self.bottomBorder.superlayer && !self.bottomBorder.isHidden) {
+        self.bottomBorder.frame = (CGRect) {
+            .origin = {.y = CGRectGetMaxY(self.bounds)},
+            .size = {.width = self.bounds.size.width, .height = 1.f}
+        };
+    }
+
     [CATransaction commit];
 }
 
@@ -161,7 +161,7 @@ const CGFloat PDTSimpleCalendarHeaderTextSize = 12.0f;
         return _separatorColor;
     }
 
-    return [UIColor lightGrayColor];
+    return [UIColor colorWithWhite:0.925f alpha:1.f];
 }
 
 
