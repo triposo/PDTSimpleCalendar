@@ -108,7 +108,7 @@ const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
     self.dayLabel.text = day;
     self.dayLabel.accessibilityLabel = accessibilityDay;
 
-    if ([self.delegate respondsToSelector:@selector(simpleCalendarViewCell:dateRangeStatusForDate:)]) {
+    if (date && [self.delegate respondsToSelector:@selector(simpleCalendarViewCell:dateRangeStatusForDate:)]) {
         self.dateRangeStatus = [self.delegate simpleCalendarViewCell:self dateRangeStatusForDate:date];
     }
 
