@@ -368,9 +368,11 @@ static NSString *PDTSimpleCalendarViewHeaderIdentifier = @"com.producteev.collec
     return (cellDateComponents.month == firstOfMonthsComponents.month);
 }
 
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     self.selectedDate = [self dateForCellAtIndexPath:indexPath];
+
+    NSArray *visibleCellIndexPaths = [collectionView indexPathsForVisibleItems];
+    [collectionView reloadItemsAtIndexPaths:visibleCellIndexPaths];
 }
 
 

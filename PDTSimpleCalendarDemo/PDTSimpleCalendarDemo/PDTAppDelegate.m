@@ -121,6 +121,10 @@
 
 #pragma mark - PDTSimpleCalendarViewDelegate
 
+- (BOOL)simpleCalendarViewController:(PDTSimpleCalendarViewController *)controller isEnabledDate:(NSDate *)date {
+    return TRUE;
+}
+
 - (void)simpleCalendarViewController:(PDTSimpleCalendarViewController *)controller didSelectDate:(NSDate *)date
 {
     NSLog(@"Date Selected : %@",date);
