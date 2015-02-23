@@ -97,7 +97,7 @@ const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
     return self;
 }
 
-- (void)setDate:(NSDate *)date calendar:(NSCalendar *)calendar {
+- (void)setDate:(NSDate *)date calendar:(NSCalendar *)calendar enabled:(BOOL)enabled {
     NSString* day = @"";
     NSString* accessibilityDay = @"";
     if (date && calendar) {
@@ -115,6 +115,10 @@ const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
     UIColor *circleColor;
     UIColor *textColor;
 
+    if (!enabled) {
+        textColor = self.textDisabledColor;
+    }
+
     if (self.dateRangeStatus == DateRangeStatusStart || self.dateRangeStatus == DateRangeStatusEnd) {
         circleColor = self.circleRangeEndColor;
         textColor = self.textSelectedColor;
@@ -127,9 +131,13 @@ const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
         self.circle.backgroundColor = circleColor.CGColor;
         self.circle.hidden = FALSE;
 
-        self.dayLabel.textColor = textColor;
-
         [CATransaction commit];
+    }
+
+    if (textColor) {
+        self.dayLabel.textColor = textColor;
+    } else {
+        [self refreshCellColors];
     }
 
     [self setNeedsLayout];

@@ -110,7 +110,7 @@ typedef NS_ENUM(NSInteger, DateRangeStatus) {
  * @param date the date (Midnight GMT).
  * @param calendar the calendar.
  */
-- (void)setDate:(NSDate *)date calendar:(NSCalendar*)calendar;
+- (void)setDate:(NSDate *)date calendar:(NSCalendar*)calendar enabled:(BOOL)enabled;
 
 /**
  *  Force the refresh of the colors for the circle and the text

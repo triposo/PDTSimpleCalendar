@@ -281,27 +281,16 @@ static NSString *PDTSimpleCalendarViewHeaderIdentifier = @"com.producteev.collec
     NSDateComponents *firstOfMonthsComponents = [self.calendar components:NSMonthCalendarUnit fromDate:firstOfMonth];
 
     BOOL isSelected = NO;
-    BOOL isCustomDate = NO;
 
     if (cellDateComponents.month == firstOfMonthsComponents.month) {
         isSelected = ([self isSelectedDate:cellDate] && (indexPath.section == [self sectionForDate:cellDate]));
-        [cell setDate:cellDate calendar:self.calendar];
-
-        //Ask the delegate if this date should have specific colors.
-        if ([self.delegate respondsToSelector:@selector(simpleCalendarViewController:shouldUseCustomColorsForDate:)]) {
-            isCustomDate = [self.delegate simpleCalendarViewController:self shouldUseCustomColorsForDate:cellDate];
-        }
+        [cell setDate:cellDate calendar:self.calendar enabled:[self isEnabledDate:cellDate]];
     } else {
-        [cell setDate:nil calendar:nil];
+        [cell setDate:nil calendar:nil enabled:FALSE];
     }
 
     if (isSelected) {
         [cell setSelected:isSelected];
-    }
-
-    //If the current Date is not enabled, or if the delegate explicitely specify custom colors
-    if (![self isEnabledDate:cellDate] || isCustomDate) {
-        [cell refreshCellColors];
     }
 
     return cell;
