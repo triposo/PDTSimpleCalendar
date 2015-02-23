@@ -82,6 +82,8 @@ const CGFloat PDTSimpleCalendarCircleSize = 36.0f;
         self.circle.frame = CGRectMake(0, 0, length, length);
         self.circle.masksToBounds = TRUE;
         self.circle.cornerRadius = 0.5f * length;
+        self.circle.borderWidth = 1.f;
+        self.circle.borderColor = [UIColor whiteColor].CGColor;
         [self.contentView.layer addSublayer:self.circle];
 
         _date = nil;
@@ -166,6 +168,12 @@ const CGFloat PDTSimpleCalendarCircleSize = 36.0f;
     if (selected) {
         circleColor = [self circleSelectedColor];
         labelColor = [self textSelectedColor];
+    }
+
+    if (self.dateRangeStatus != DateRangeStatusNone || selected) {
+        self.dayLabel.backgroundColor = [UIColor clearColor];
+    } else {
+        self.dayLabel.backgroundColor = [UIColor whiteColor];
     }
 
     [CATransaction begin];
