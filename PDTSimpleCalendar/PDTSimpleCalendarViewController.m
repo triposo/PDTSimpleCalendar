@@ -217,14 +217,6 @@ static NSString *PDTSimpleCalendarViewHeaderIdentifier = @"com.producteev.collec
     }
 }
 
-//Deprecated, You need to use setSelectedDate: and call scrollToDate:animated: or scrollToSelectedDate:animated:
-//TODO: Remove this in next release
-- (void)setSelectedDate:(NSDate *)newSelectedDate animated:(BOOL)animated
-{
-    [self setSelectedDate:newSelectedDate];
-    [self scrollToSelectedDate:animated];
-}
-
 #pragma mark - Scroll to a specific date
 
 - (void)scrollToSelectedDate:(BOOL)animated
