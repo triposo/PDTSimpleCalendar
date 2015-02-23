@@ -8,7 +8,7 @@
 
 #import "PDTSimpleCalendarViewCell.h"
 
-const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
+const CGFloat PDTSimpleCalendarCircleSize = 36.0f;
 
 @interface PDTSimpleCalendarViewCell ()
 
@@ -132,6 +132,12 @@ const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
         self.circle.hidden = FALSE;
 
         [CATransaction commit];
+    }
+
+    if (self.dateRangeStatus != DateRangeStatusNone || self.isSelected) {
+        self.dayLabel.backgroundColor = [UIColor clearColor];
+    } else {
+        self.dayLabel.backgroundColor = [UIColor whiteColor];
     }
 
     if (textColor) {
