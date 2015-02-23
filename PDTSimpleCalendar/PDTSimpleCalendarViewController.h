@@ -49,13 +49,6 @@
  */
 @property (nonatomic, strong) UIColor *backgroundColor;
 
-/**
- *  Text color for the overlay view (Month and Year when the user scrolls the calendar)
- */
-@property (nonatomic, strong) UIColor *overlayTextColor;
-
-
-
 /** @name Getting Notified of changes */
 
 /**

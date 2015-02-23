@@ -21,7 +21,6 @@ static NSString *PDTSimpleCalendarViewHeaderIdentifier = @"com.producteev.collec
 
 @interface PDTSimpleCalendarViewController () <PDTSimpleCalendarViewCellDelegate>
 
-@property (nonatomic, strong) UILabel *overlayView;
 @property (nonatomic, strong) NSDateFormatter *headerDateFormatter; //Will be used to format date in header view and on scroll.
 
 // First and last date of the months based on the public properties first & lastDate
@@ -83,9 +82,7 @@ static NSString *PDTSimpleCalendarViewHeaderIdentifier = @"com.producteev.collec
 
 - (void)simpleCalendarCommonInit
 {
-    self.overlayView = [[UILabel alloc] init];
     self.backgroundColor = [UIColor whiteColor];
-    self.overlayTextColor = [UIColor blackColor];
     self.daysPerWeek = 7;
 }
 
@@ -262,14 +259,6 @@ static NSString *PDTSimpleCalendarViewHeaderIdentifier = @"com.producteev.collec
     }
 }
 
-- (void)setOverlayTextColor:(UIColor *)overlayTextColor
-{
-    _overlayTextColor = overlayTextColor;
-    if (self.overlayView) {
-        [self.overlayView setTextColor:self.overlayTextColor];
-    }
-}
-
 #pragma mark - View LifeCycle
 
 - (void)viewDidLoad
@@ -284,21 +273,6 @@ static NSString *PDTSimpleCalendarViewHeaderIdentifier = @"com.producteev.collec
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
     [self.collectionView setBackgroundColor:self.backgroundColor];
-
-    //Configure the Overlay View
-    [self.overlayView setBackgroundColor:[self.backgroundColor colorWithAlphaComponent:0.90]];
-    [self.overlayView setFont:[UIFont boldSystemFontOfSize:PDTSimpleCalendarOverlaySize]];
-    [self.overlayView setTextColor:self.overlayTextColor];
-    [self.overlayView setAlpha:0.0];
-    [self.overlayView setTextAlignment:NSTextAlignmentCenter];
-
-    [self.view addSubview:self.overlayView];
-    [self.overlayView setTranslatesAutoresizingMaskIntoConstraints:NO];
-    NSDictionary *viewsDictionary = @{@"overlayView": self.overlayView};
-    NSDictionary *metricsDictionary = @{@"overlayViewHeight": @(PDTSimpleCalendarFlowLayoutHeaderHeight)};
-
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[overlayView]|" options:NSLayoutFormatAlignAllTop metrics:nil views:viewsDictionary]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[overlayView(==overlayViewHeight)]" options:NSLayoutFormatAlignAllTop metrics:metricsDictionary views:viewsDictionary]];
 }
 
 #pragma mark - Rotation Handling
@@ -434,44 +408,6 @@ static NSString *PDTSimpleCalendarViewHeaderIdentifier = @"com.producteev.collec
     CGFloat itemWidth = floorf(CGRectGetWidth(self.collectionView.bounds) / self.daysPerWeek);
 
     return CGSizeMake(itemWidth, itemWidth);
-}
-
-#pragma mark - UIScrollViewDelegate
-
-- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
-{
-    //We only display the overlay view if there is a vertical velocity
-    if ( fabsf(velocity.y) > 0.0f) {
-        if (self.overlayView.alpha < 1.0) {
-            [UIView animateWithDuration:0.25 animations:^{
-                [self.overlayView setAlpha:1.0];
-            }];
-        }
-    }
-}
-
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-{
-    NSTimeInterval delay = (decelerate) ? 1.5 : 0.0;
-    [self performSelector:@selector(hideOverlayView) withObject:nil afterDelay:delay];
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    //Update Content of the Overlay View
-    NSArray *indexPaths = [self.collectionView indexPathsForVisibleItems];
-    //indexPaths is not sorted
-    NSArray *sortedIndexPaths = [indexPaths sortedArrayUsingSelector:@selector(compare:)];
-    NSIndexPath *firstIndexPath = [sortedIndexPaths firstObject];
-
-    self.overlayView.text = [self.headerDateFormatter stringFromDate:[self firstOfMonthForSection:firstIndexPath.section]];
-}
-
-- (void)hideOverlayView
-{
-    [UIView animateWithDuration:0.25 animations:^{
-        [self.overlayView setAlpha:0.0];
-    }];
 }
 
 #pragma mark -
