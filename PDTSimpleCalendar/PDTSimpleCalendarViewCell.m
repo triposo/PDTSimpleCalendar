@@ -241,6 +241,7 @@ const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
     self.dayLabel.text = @"";
     self.dayLabel.textColor = [self textDefaultColor];
     self.circle.hidden = TRUE;
+    self.stripe.hidden = TRUE;
 
     [CATransaction commit];
 }
