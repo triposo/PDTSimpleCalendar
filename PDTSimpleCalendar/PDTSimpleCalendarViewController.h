@@ -22,32 +22,32 @@
  *
  *  If not set, the default value is `[NSCalendar currentCalendar]`
  */
-@property (nonatomic, strong) NSCalendar *calendar;
+@property (nonatomic) NSCalendar *calendar;
 
 /**
  *  First date enabled in the calendar. If not set, the default value is the first day of the current month (based on `[NSDate date]`).
  *  You can pass every `NSDate`, if the firstDate is not the first day of its month, the previous days will be automatically disabled.
  */
-@property (nonatomic, strong) NSDate *firstDate;
+@property (nonatomic) NSDate *firstDate;
 
 /**
  *  Last date enabled in the calendar. If not set, the default value is the first day of the month of `firstDate` + one year using `calendar` for calculation
  *  You can pass every `NSDate`, if the lastDate is not the last day of its month, the following days will be automatically disabled.
  */
-@property (nonatomic, strong) NSDate *lastDate;
+@property (nonatomic) NSDate *lastDate;
 
 /**
  *  Selected date displayed by the calendar.
  *  Changing this value will cause the calendar to scroll to this date (without animation).
  */
-@property (nonatomic, strong) NSDate *selectedDate;
+@property (nonatomic) NSDate *selectedDate;
 
 /** @name Customizing Appearance */
 
 /**
  *  Background color of the Calendar. This will also affect the value of the background color for the overlay view.
  */
-@property (nonatomic, strong) UIColor *backgroundColor;
+@property (nonatomic) UIColor *backgroundColor;
 
 /** @name Getting Notified of changes */
 
