@@ -80,8 +80,7 @@ const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
 
         _date = nil;
 
-        length = ceilf(self.textDefaultFont.lineHeight);
-        _dayLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, length, length)];
+        _dayLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _dayLabel.font = self.textDefaultFont;
         _dayLabel.textAlignment = NSTextAlignmentCenter;
         _dayLabel.backgroundColor = [UIColor clearColor];
@@ -102,6 +101,9 @@ const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
     }
     self.dayLabel.text = day;
     self.dayLabel.accessibilityLabel = accessibilityDay;
+
+    [self.dayLabel sizeToFit];
+    [self setNeedsLayout];
 }
 
 - (void)setSelected:(BOOL)selected
@@ -110,9 +112,8 @@ const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
     [self setCircleColor:FALSE selected:selected];
 }
 
-- (void)setCircleColor:(BOOL)today selected:(BOOL)selected
-{
-    UIColor *circleColor = [self circleDefaultColor];
+- (void)setCircleColor:(BOOL)today selected:(BOOL)selected {
+    UIColor *circleColor;
     UIColor *labelColor = [self textDefaultColor];
 
     if (self.date && self.delegate) {
