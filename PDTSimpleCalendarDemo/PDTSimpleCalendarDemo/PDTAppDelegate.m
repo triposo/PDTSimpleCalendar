@@ -13,7 +13,10 @@
 
 @interface PDTAppDelegate () <PDTSimpleCalendarViewDelegate>
 
-@property (nonatomic, strong) NSArray *customDates;
+@property (nonatomic) NSArray *customDates;
+
+@property (nonatomic) NSDate *dateRangeStart;
+@property (nonatomic) NSDate *dateRangeEnd;
 
 @end
 
@@ -27,6 +30,9 @@
     NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
     dateFormatter.dateFormat = @"dd/MM/yyyy";
     _customDates = @[[dateFormatter dateFromString:@"01/05/2014"], [dateFormatter dateFromString:@"01/06/2014"], [dateFormatter dateFromString:@"01/07/2014"]];
+
+    self.dateRangeStart = [dateFormatter dateFromString:@"01/05/2015"];
+    self.dateRangeEnd = [dateFormatter dateFromString:@"11/05/2015"];
     
     PDTSimpleCalendarViewController *calendarViewController = [[PDTSimpleCalendarViewController alloc] init];
     //This is the default behavior, will display a full year starting the first of the current month
@@ -126,6 +132,14 @@
 - (void)simpleCalendarViewController:(PDTSimpleCalendarViewController *)controller didSelectDate:(NSDate *)date
 {
     NSLog(@"Date Selected : %@",date);
+}
+
+- (NSArray *)simpleCalendarViewController:(PDTSimpleCalendarViewController *)controller dateRangeContainingDate:(NSDate *)date {
+    if ([date timeIntervalSinceDate:self.dateRangeStart] >= 0.0 && [self.dateRangeEnd timeIntervalSinceDate:date] >= 0.0) {
+        return @[self.dateRangeStart , self.dateRangeEnd];
+    } else {
+        return nil;
+    }
 }
 
 - (BOOL)simpleCalendarViewController:(PDTSimpleCalendarViewController *)controller shouldUseCustomColorsForDate:(NSDate *)date
