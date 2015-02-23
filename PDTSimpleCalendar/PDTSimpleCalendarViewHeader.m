@@ -8,7 +8,7 @@
 
 #import "PDTSimpleCalendarViewHeader.h"
 
-const CGFloat PDTSimpleCalendarHeaderTextSize = 12.0f;
+const CGFloat PDTSimpleCalendarHeaderTextSize = 13.0f;
 
 @interface PDTSimpleCalendarViewHeader ()
 
@@ -22,13 +22,13 @@ const CGFloat PDTSimpleCalendarHeaderTextSize = 12.0f;
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        _titleLabel = [[UILabel alloc] init];
-        [_titleLabel setFont:self.textFont];
-        [_titleLabel setTextColor:self.textColor];
-        [_titleLabel setBackgroundColor:[UIColor clearColor]];
+        self.backgroundColor = [UIColor whiteColor];
 
+        _titleLabel = [[UILabel alloc] init];
+        _titleLabel.font = self.textFont;
+        _titleLabel.textColor = self.textColor;
+        _titleLabel.backgroundColor = [UIColor whiteColor];
         [self addSubview:_titleLabel];
-        [_titleLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
 
         CALayer *border = [CALayer layer];
         border.contentsScale = [UIScreen mainScreen].scale;
@@ -52,7 +52,7 @@ const CGFloat PDTSimpleCalendarHeaderTextSize = 12.0f;
             UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
             label.font = self.textFont;
             label.textColor = self.textColor;
-            label.backgroundColor = [UIColor clearColor];
+            label.backgroundColor = [UIColor whiteColor];
             label.text = weekdaySymbols[idx];
             label.numberOfLines = 1;
             [label sizeToFit];
@@ -107,10 +107,14 @@ const CGFloat PDTSimpleCalendarHeaderTextSize = 12.0f;
         }
 
         size = self.titleLabel.bounds.size;
-        offsetX = roundf(CGRectGetMidX(self.bounds) - 0.5 * size.width);
-        CGPoint center = self.titleLabel.center;
-        center.x = offsetX + 0.5 * size.width;
-        self.titleLabel.center = center;
+
+        offsetX = roundf(CGRectGetMidX(self.bounds) - 0.5f * size.width);
+        offsetY = roundf(CGRectGetMidY(self.bounds) - 0.5f * contentHeight);
+
+        self.titleLabel.center = (CGPoint) {
+            .x = offsetX + 0.5f * size.width,
+            .y = offsetY + 0.5f * size.height
+        };
     }
 
     if (self.bottomBorder.superlayer && !self.bottomBorder.isHidden) {
