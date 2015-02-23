@@ -198,6 +198,18 @@ const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
     [CATransaction commit];
 }
 
+- (UIColor *)cellRangeColor {
+    if (!_cellRangeColor) {
+        _cellRangeColor = [[[self class] appearance] cellRangeColor];
+    }
+
+    if (_cellRangeColor) {
+        return _cellRangeColor;
+    }
+
+    return [UIColor colorWithWhite:0.925f alpha:1.f];
+}
+
 #pragma mark - Circle Color Customization Methods
 
 - (UIColor *)circleDefaultColor
@@ -223,6 +235,18 @@ const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
     }
 
     return [UIColor colorWithRed:0.318 green:0.659 blue:0.808 alpha:1];
+}
+
+- (UIColor *)circleRangeEndColor {
+    if (!_circleRangeEndColor) {
+        _circleRangeEndColor = [[[self class] appearance] circleRangeEndColor];
+    }
+
+    if (_circleRangeEndColor) {
+        return _circleRangeEndColor;
+    }
+
+    return [UIColor grayColor];
 }
 
 #pragma mark - Text Label Customizations Color
