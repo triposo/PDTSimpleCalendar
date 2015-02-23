@@ -72,6 +72,10 @@ const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
+        self.stripe = [CALayer layer];
+        self.stripe.contentsScale = [UIScreen mainScreen].scale;
+        [self.contentView.layer addSublayer:self.stripe];
+
         CGFloat length = PDTSimpleCalendarCircleSize;
         self.circle = [CALayer layer];
         self.circle.contentsScale = [UIScreen mainScreen].scale;
@@ -104,12 +108,15 @@ const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
     self.dayLabel.text = day;
     self.dayLabel.accessibilityLabel = accessibilityDay;
 
+    if ([self.delegate respondsToSelector:@selector(simpleCalendarViewCell:dateRangeStatusForDate:)]) {
+        self.dateRangeStatus = [self.delegate simpleCalendarViewCell:self dateRangeStatusForDate:date];
+    }
+
     [self.dayLabel sizeToFit];
     [self setNeedsLayout];
 }
 
-- (void)setSelected:(BOOL)selected
-{
+- (void)setSelected:(BOOL)selected {
     [super setSelected:selected];
     [self setCircleColorSelected:selected];
 }
@@ -129,8 +136,10 @@ const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
                 circleColor = [self.delegate simpleCalendarViewCell:self circleColorForDate:self.date];
             }
         }
+    }
 
-
+    if (self.dateRangeStatus == DateRangeStatusStart || self.dateRangeStatus == DateRangeStatusEnd) {
+        circleColor = self.circleRangeEndColor;
     }
 
     if (selected) {
@@ -149,7 +158,9 @@ const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
     }
 
     self.dayLabel.textColor = labelColor;
-    
+
+    self.stripe.backgroundColor = self.cellRangeColor.CGColor;
+
     [CATransaction commit];
 }
 
@@ -176,6 +187,42 @@ const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
     };
 
     self.circle.position = self.dayLabel.center;
+
+    self.stripe.hidden = (self.dateRangeStatus == DateRangeStatusNone);
+
+    if (!self.stripe.isHidden) {
+        CGSize size;
+        CGPoint origin;
+
+        if (self.dateRangeStatus == DateRangeStatusMiddle) {
+            size = (CGSize) {
+                .width = CGRectGetWidth(self.contentView.bounds) + 2.f,
+                .height = CGRectGetHeight(self.circle.bounds)
+            };
+            origin = (CGPoint) {
+                .y = CGRectGetMidY(self.circle.frame) - 0.5f * size.height
+            };
+        } else if (self.dateRangeStatus == DateRangeStatusStart) {
+            size = (CGSize) {
+                .width = 0.5f * CGRectGetWidth(self.contentView.bounds) + 2.f,
+                .height = CGRectGetHeight(self.circle.bounds)
+            };
+            origin = (CGPoint) {
+                .x = CGRectGetMidX(self.circle.frame),
+                .y = CGRectGetMidY(self.circle.frame) - 0.5f * size.height
+            };
+        } else {
+            size = (CGSize) {
+                .width = 0.5f * CGRectGetWidth(self.contentView.bounds),
+                .height = CGRectGetHeight(self.circle.bounds)
+            };
+            origin = (CGPoint) {
+                .y = CGRectGetMidY(self.circle.frame) - 0.5f * size.height
+            };
+        }
+
+        self.stripe.frame = (CGRect) {.origin = origin, .size = size};
+    }
 
     [CATransaction commit];
 }

@@ -53,7 +53,7 @@ typedef NS_ENUM(NSInteger, DateRangeStatus) {
  */
 - (UIColor *)simpleCalendarViewCell:(PDTSimpleCalendarViewCell *)cell circleColorForDate:(NSDate *)date;
 
-- (DateRangeStatus)dateRangeStatusForCell:(PDTSimpleCalendarViewCell *)cell;
+- (DateRangeStatus)simpleCalendarViewCell:(PDTSimpleCalendarViewCell *)cell dateRangeStatusForDate:(NSDate *)date;
 
 @end
 
