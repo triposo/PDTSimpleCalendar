@@ -103,6 +103,8 @@
  */
 - (void)simpleCalendarViewController:(PDTSimpleCalendarViewController *)controller didSelectDate:(NSDate *)date;
 
+- (NSArray *)simpleCalendarViewController:(PDTSimpleCalendarViewController *)controller dateRangeContainingDate:(NSDate *)date;
+
 /** @name Color Customization */
 
 /**

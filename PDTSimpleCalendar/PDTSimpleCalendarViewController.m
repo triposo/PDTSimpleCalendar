@@ -506,4 +506,27 @@ static NSString *PDTSimpleCalendarViewHeaderIdentifier = @"com.producteev.collec
     return nil;
 }
 
+- (DateRangeStatus)simpleCalendarViewCell:(PDTSimpleCalendarViewCell *)cell dateRangeStatusForDate:(NSDate *)date {
+    DateRangeStatus result = DateRangeStatusNone;
+
+    if ([self.delegate respondsToSelector:@selector(simpleCalendarViewController:dateRangeContainingDate:)]) {
+        NSArray *dateRange = [self.delegate simpleCalendarViewController:self dateRangeContainingDate:date];
+
+        if (dateRange.count == 2) {
+            NSDate *start = dateRange.firstObject;
+            NSDate *end = dateRange.lastObject;
+
+            if ([self clampAndCompareDate:start withReferenceDate:date]) {
+                result = DateRangeStatusStart;
+            } else if ([self clampAndCompareDate:end withReferenceDate:date]) {
+                result = DateRangeStatusEnd;
+            } else {
+                result = DateRangeStatusMiddle;
+            }
+        }
+    }
+    
+    return result;
+}
+
 @end
