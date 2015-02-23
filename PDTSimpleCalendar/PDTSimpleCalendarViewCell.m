@@ -78,7 +78,6 @@ const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
         [self.contentView.layer addSublayer:self.circleLayer];
 
         _date = nil;
-        _isToday = NO;
         _dayLabel = [[UILabel alloc] initWithFrame:self.circleLayer.frame];
         _dayLabel.font = [self textDefaultFont];
         _dayLabel.textAlignment = NSTextAlignmentCenter;
@@ -91,8 +90,7 @@ const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
     return self;
 }
 
-- (void)setDate:(NSDate *)date calendar:(NSCalendar *)calendar
-{
+- (void)setDate:(NSDate *)date calendar:(NSCalendar *)calendar {
     NSString* day = @"";
     NSString* accessibilityDay = @"";
     if (date && calendar) {
@@ -104,16 +102,10 @@ const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
     self.dayLabel.accessibilityLabel = accessibilityDay;
 }
 
-- (void)setIsToday:(BOOL)isToday
-{
-    _isToday = isToday;
-    [self setCircleColor:isToday selected:self.selected];
-}
-
 - (void)setSelected:(BOOL)selected
 {
     [super setSelected:selected];
-    [self setCircleColor:self.isToday selected:selected];
+    [self setCircleColor:FALSE selected:selected];
 }
 
 - (void)setCircleColor:(BOOL)today selected:(BOOL)selected
@@ -154,10 +146,8 @@ const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
     [CATransaction commit];
 }
 
-
-- (void)refreshCellColors
-{
-    [self setCircleColor:self.isToday selected:self.isSelected];
+- (void)refreshCellColors {
+    [self setCircleColor:FALSE selected:self.isSelected];
 }
 
 - (void)layoutSubviews {
@@ -189,7 +179,6 @@ const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
 {
     [super prepareForReuse];
     _date = nil;
-    _isToday = NO;
 
     [CATransaction begin];
     [CATransaction setDisableActions:TRUE];
@@ -226,7 +215,7 @@ const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
         return _circleTodayColor;
     }
 
-    return [UIColor grayColor];
+    return [UIColor whiteColor];
 }
 
 - (UIColor *)circleSelectedColor

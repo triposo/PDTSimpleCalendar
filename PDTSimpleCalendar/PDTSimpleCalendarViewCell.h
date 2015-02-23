@@ -65,11 +65,6 @@
 @property (nonatomic, weak) id<PDTSimpleCalendarViewCellDelegate> delegate;
 
 /**
- *  Define if the cell is today in the calendar.
- */
-@property (nonatomic, assign) BOOL isToday;
-
-/**
  *  Customize the circle behind the day's number color using UIAppearance.
  */
 @property (nonatomic, strong) UIColor *circleDefaultColor UI_APPEARANCE_SELECTOR;
