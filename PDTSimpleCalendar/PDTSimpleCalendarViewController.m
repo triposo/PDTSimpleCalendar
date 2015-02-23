@@ -291,7 +291,6 @@ static NSString *PDTSimpleCalendarViewHeaderIdentifier = @"com.producteev.collec
 
     if (cellDateComponents.month == firstOfMonthsComponents.month) {
         isSelected = ([self isSelectedDate:cellDate] && (indexPath.section == [self sectionForDate:cellDate]));
-        isToday = [self isTodayDate:cellDate];
         [cell setDate:cellDate calendar:self.calendar];
 
         //Ask the delegate if this date should have specific colors.
@@ -375,11 +374,6 @@ static NSString *PDTSimpleCalendarViewHeaderIdentifier = @"com.producteev.collec
 {
     NSDateComponents *components = [self.calendar components:unitFlags fromDate:date];
     return [self.calendar dateFromComponents:components];
-}
-
-- (BOOL)isTodayDate:(NSDate *)date
-{
-    return [self clampAndCompareDate:date withReferenceDate:[NSDate date]];
 }
 
 - (BOOL)isSelectedDate:(NSDate *)date
