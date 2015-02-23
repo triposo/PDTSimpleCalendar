@@ -112,7 +112,26 @@ const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
         self.dateRangeStatus = [self.delegate simpleCalendarViewCell:self dateRangeStatusForDate:date];
     }
 
-    [self.dayLabel sizeToFit];
+    UIColor *circleColor;
+    UIColor *textColor;
+
+    if (self.dateRangeStatus == DateRangeStatusStart || self.dateRangeStatus == DateRangeStatusEnd) {
+        circleColor = self.circleRangeEndColor;
+        textColor = self.textSelectedColor;
+    }
+
+    if (circleColor && !self.isSelected) {
+        [CATransaction begin];
+        [CATransaction setDisableActions:TRUE];
+
+        self.circle.backgroundColor = circleColor.CGColor;
+        self.circle.hidden = FALSE;
+
+        self.dayLabel.textColor = textColor;
+
+        [CATransaction commit];
+    }
+
     [self setNeedsLayout];
 }
 
@@ -140,6 +159,7 @@ const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
 
     if (self.dateRangeStatus == DateRangeStatusStart || self.dateRangeStatus == DateRangeStatusEnd) {
         circleColor = self.circleRangeEndColor;
+        labelColor = self.textSelectedColor;
     }
 
     if (selected) {
@@ -179,6 +199,7 @@ const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
         .y = CGRectGetMidY(self.contentView.bounds)
     };
 
+    [self.dayLabel sizeToFit];
     CGSize size = self.dayLabel.bounds.size;
 
     self.dayLabel.center = (CGPoint) {
@@ -294,7 +315,7 @@ const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
         return _circleRangeEndColor;
     }
 
-    return [UIColor grayColor];
+    return [UIColor lightGrayColor];
 }
 
 #pragma mark - Text Label Customizations Color
