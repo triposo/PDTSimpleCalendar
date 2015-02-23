@@ -86,7 +86,7 @@ const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
         _dayLabel.backgroundColor = [UIColor clearColor];
         [self.contentView addSubview:self.dayLabel];
 
-        [self setCircleColor:NO selected:NO];
+        [self setCircleColorSelected:FALSE];
     }
     return self;
 }
@@ -109,10 +109,10 @@ const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
 - (void)setSelected:(BOOL)selected
 {
     [super setSelected:selected];
-    [self setCircleColor:FALSE selected:selected];
+    [self setCircleColorSelected:selected];
 }
 
-- (void)setCircleColor:(BOOL)today selected:(BOOL)selected {
+- (void)setCircleColorSelected:(BOOL)selected {
     UIColor *circleColor;
     UIColor *labelColor = [self textDefaultColor];
 
@@ -128,7 +128,7 @@ const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
             }
         }
     }
-    
+
     if (selected) {
         circleColor = [self circleSelectedColor];
         labelColor = [self textSelectedColor];
@@ -145,12 +145,12 @@ const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
     }
 
     self.dayLabel.textColor = labelColor;
-
+    
     [CATransaction commit];
 }
 
 - (void)refreshCellColors {
-    [self setCircleColor:FALSE selected:self.isSelected];
+    [self setCircleColorSelected:self.isSelected];
 }
 
 - (void)layoutSubviews {
@@ -208,8 +208,7 @@ const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
     return [UIColor whiteColor];
 }
 
-- (UIColor *)circleSelectedColor
-{
+- (UIColor *)circleSelectedColor {
     if(_circleSelectedColor == nil) {
         _circleSelectedColor = [[[self class] appearance] circleSelectedColor];
     }
@@ -218,7 +217,7 @@ const CGFloat PDTSimpleCalendarCircleSize = 32.0f;
         return _circleSelectedColor;
     }
 
-    return [UIColor redColor];
+    return [UIColor colorWithRed:0.318 green:0.659 blue:0.808 alpha:1];
 }
 
 #pragma mark - Text Label Customizations Color
