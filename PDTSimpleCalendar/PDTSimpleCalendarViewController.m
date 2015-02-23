@@ -187,13 +187,13 @@ static NSString *PDTSimpleCalendarViewHeaderIdentifier = @"com.producteev.collec
 
     _selectedDate = startOfDay;
 
-    NSIndexPath *indexPath = [self indexPathForCellAtDate:_selectedDate];
-    [self.collectionView reloadItemsAtIndexPaths:@[ indexPath ]];
-
     //Notify the delegate
     if ([self.delegate respondsToSelector:@selector(simpleCalendarViewController:didSelectDate:)]) {
         [self.delegate simpleCalendarViewController:self didSelectDate:self.selectedDate];
     }
+
+    NSIndexPath *indexPath = [self indexPathForCellAtDate:_selectedDate];
+    [self.collectionView reloadItemsAtIndexPaths:@[ indexPath ]];
 }
 
 #pragma mark - Scroll to a specific date

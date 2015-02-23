@@ -132,6 +132,17 @@
 - (void)simpleCalendarViewController:(PDTSimpleCalendarViewController *)controller didSelectDate:(NSDate *)date
 {
     NSLog(@"Date Selected : %@",date);
+
+    NSTimeInterval x = self.dateRangeStart.timeIntervalSince1970;
+    NSTimeInterval y = self.dateRangeEnd.timeIntervalSince1970;
+    NSTimeInterval m = 0.5 * x + 0.5 * y;
+    NSTimeInterval z = date.timeIntervalSince1970;
+
+    if (z < m) {
+        self.dateRangeStart = date;
+    } else {
+        self.dateRangeEnd = date;
+    }
 }
 
 - (NSArray *)simpleCalendarViewController:(PDTSimpleCalendarViewController *)controller dateRangeContainingDate:(NSDate *)date {
