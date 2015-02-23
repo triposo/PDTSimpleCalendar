@@ -6,8 +6,14 @@
 //  Copyright (c) 2013 Producteev. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+
+typedef NS_ENUM(NSInteger, DateRangeStatus) {
+    DateRangeStatusNone,
+    DateRangeStatusStart,
+    DateRangeStatusMiddle,
+    DateRangeStatusEnd
+};
 
 @class PDTSimpleCalendarViewCell;
 
@@ -47,9 +53,9 @@
  */
 - (UIColor *)simpleCalendarViewCell:(PDTSimpleCalendarViewCell *)cell circleColorForDate:(NSDate *)date;
 
-@end
+- (DateRangeStatus)dateRangeStatusForCell:(PDTSimpleCalendarViewCell *)cell;
 
-#import <UIKit/UIKit.h>
+@end
 
 /**
  *  The `PDTSimpleCalendarViewCell` class displays a day in the calendar.
@@ -70,11 +76,6 @@
 @property (nonatomic, strong) UIColor *circleDefaultColor UI_APPEARANCE_SELECTOR;
 
 /**
- *  Customize the color of the circle for today's cell using UIAppearance.
- */
-@property (nonatomic, strong) UIColor *circleTodayColor UI_APPEARANCE_SELECTOR;
-
-/**
  *  Customize the color of the circle when cell is selected using UIAppearance.
  */
 @property (nonatomic, strong) UIColor *circleSelectedColor UI_APPEARANCE_SELECTOR;
@@ -83,11 +84,6 @@
  *  Customize the day's number using UIAppearance.
  */
 @property (nonatomic, strong) UIColor *textDefaultColor UI_APPEARANCE_SELECTOR;
-
-/**
- *  Customize today's number color using UIAppearance.
- */
-@property (nonatomic, strong) UIColor *textTodayColor UI_APPEARANCE_SELECTOR;
 
 /**
  *  Customize the day's number color when cell is selected using UIAppearance.
@@ -108,7 +104,6 @@
  * Set the date for this cell
  *
  * @param date the date (Midnight GMT).
- *
  * @param calendar the calendar.
  */
 - (void)setDate:(NSDate *)date calendar:(NSCalendar*)calendar;
